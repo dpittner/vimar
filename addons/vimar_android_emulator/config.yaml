@@ -1,0 +1,31 @@
+name: Vimar Android Emulator (ADB)
+version: "1.0.1"
+slug: vimar_android_emulator
+description: Android emulator add-on exposing ADB for the Vimar View App integration.
+url: https://github.com/example/vimar-ha-addon-repo/tree/main/addons/vimar_android_emulator
+arch:
+  - amd64
+startup: services
+boot: auto
+init: false
+privileged:
+  - SYS_ADMIN
+  - NET_ADMIN
+  - SYS_PTRACE
+devices:
+  - /dev/kvm
+  - /dev/bus/usb
+map:
+  - config:rw
+ports:
+  5555/tcp: 5555
+  6080/tcp: 6080
+ports_description:
+  5555/tcp: Android Debug Bridge
+  6080/tcp: Browser VNC access to emulator UI
+options:
+  device: "Samsung Galaxy S10"
+  emulator_args: "-no-audio -no-boot-anim -gpu swiftshader_indirect"
+schema:
+  device: str
+  emulator_args: str
