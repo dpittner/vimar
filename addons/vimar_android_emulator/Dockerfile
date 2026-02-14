@@ -7,8 +7,7 @@ ENV WEB_VNC=true \
     ANDROID_SDK_HOME=/data/.android \
     ANDROID_AVD_HOME=/data/.android/avd
 
-COPY run.sh /run.sh
-RUN chmod +x /run.sh
+COPY --chmod=755 run.sh /run.sh
 
 EXPOSE 5555 6080
 
