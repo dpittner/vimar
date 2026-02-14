@@ -1,0 +1,29 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect to Vimar View App emulator",
+        "description": "Provide emulator ADB endpoint and Vimar app credentials.",
+        "data": {
+          "adb_host": "ADB host",
+          "adb_port": "ADB port",
+          "serial": "ADB serial (optional)",
+          "username": "Vimar username",
+          "password": "Vimar password",
+          "pin": "Vimar app PIN (optional)",
+          "poll_interval": "Polling interval (seconds)"
+        }
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Vimar View App options",
+        "data": {
+          "poll_interval": "Polling interval (seconds)"
+        }
+      }
+    }
+  }
+}

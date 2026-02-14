@@ -1,0 +1,16 @@
+{
+  "domain": "vimar_viewapp",
+  "name": "Vimar View App (Android Bridge)",
+  "version": "0.1.0",
+  "documentation": "https://github.com/example/vimar-viewapp-ha",
+  "issue_tracker": "https://github.com/example/vimar-viewapp-ha/issues",
+  "codeowners": [
+    "@maintainer"
+  ],
+  "config_flow": true,
+  "iot_class": "local_polling",
+  "requirements": [
+    "uiautomator2==3.2.9",
+    "adbutils==2.8.0"
+  ]
+}
