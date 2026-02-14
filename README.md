@@ -71,3 +71,14 @@ It uses Android emulator image `budtmo/docker-android:emulator_13.0` and exposes
 
 - UI automation depends on Vimar app layout/localization; selector updates may be needed when app UI changes.
 - Emulator performance requires virtualization support (`/dev/kvm`).
+
+
+## Emulator persistence on restart
+
+Yes — in the add-on, emulator and app data are configured to persist in Home Assistant add-on `/data`:
+
+- `/data/android-home`
+- `/data/.android`
+- `/data/.android/avd`
+
+So installed apps (including Vimar View) and emulator state survive Home Assistant/add-on restarts.

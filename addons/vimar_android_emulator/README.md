@@ -21,6 +21,17 @@ Use it as the Android runtime for the Vimar View App integration, so you only ne
    - ADB host: `homeassistant` (if same HA host networking allows) or your HA host IP
    - ADB port: `5555`
 
+
+## Persistence
+
+This add-on stores Android home/AVD data in Home Assistant add-on `/data`:
+
+- `HOME=/data/android-home`
+- `ANDROID_EMULATOR_HOME=/data/.android`
+- `ANDROID_AVD_HOME=/data/.android/avd`
+
+That means installed apps and emulator device state persist across add-on restarts and Home Assistant restarts.
+
 ## Configuration options
 
 - `device`: Android profile name (default: `Samsung Galaxy S10`)
