@@ -1,5 +1,5 @@
 name: Vimar Android Emulator (ADB)
-version: "1.0.6"
+version: "1.0.7"
 slug: vimar_android_emulator
 description: Android emulator add-on exposing ADB for the Vimar View App integration.
 url: https://github.com/example/vimar-ha-addon-repo/tree/main/addons/vimar_android_emulator
