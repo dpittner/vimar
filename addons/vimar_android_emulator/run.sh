@@ -5,23 +5,18 @@ OPTIONS_FILE="/data/options.json"
 DEVICE_DEFAULT="Samsung Galaxy S10"
 EMULATOR_ARGS_DEFAULT="-no-audio -no-boot-anim -gpu swiftshader_indirect"
 
+json_get_string() {
+  local key="$1"
+  local file="$2"
+  tr -d '\n' < "$file" | sed -nE "s/.*\"${key}\"[[:space:]]*:[[:space:]]*\"([^\"]*)\".*/\1/p" | head -n1
+}
+
 if [ -f "$OPTIONS_FILE" ]; then
-  DEVICE="$(python - <<'PY'
-import json
-from pathlib import Path
-p=Path('/data/options.json')
-obj=json.loads(p.read_text()) if p.exists() else {}
-print(obj.get('device', 'Samsung Galaxy S10'))
-PY
-)"
-  EMULATOR_ARGS="$(python - <<'PY'
-import json
-from pathlib import Path
-p=Path('/data/options.json')
-obj=json.loads(p.read_text()) if p.exists() else {}
-print(obj.get('emulator_args', '-no-audio -no-boot-anim -gpu swiftshader_indirect'))
-PY
-)"
+  DEVICE="$(json_get_string "device" "$OPTIONS_FILE")"
+  EMULATOR_ARGS="$(json_get_string "emulator_args" "$OPTIONS_FILE")"
+
+  DEVICE="${DEVICE:-$DEVICE_DEFAULT}"
+  EMULATOR_ARGS="${EMULATOR_ARGS:-$EMULATOR_ARGS_DEFAULT}"
 else
   DEVICE="$DEVICE_DEFAULT"
   EMULATOR_ARGS="$EMULATOR_ARGS_DEFAULT"
