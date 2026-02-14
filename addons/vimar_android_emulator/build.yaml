@@ -1,0 +1,5 @@
+build_from:
+  amd64: budtmo/docker-android:emulator_13.0
+labels:
+  org.opencontainers.image.title: "Vimar Android Emulator (ADB)"
+  org.opencontainers.image.description: "Home Assistant add-on shipping Android emulator for Vimar View App automation"

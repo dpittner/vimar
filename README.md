@@ -1,74 +1,73 @@
-# Vimar View App Home Assistant custom integration
+# Vimar View App for Home Assistant
 
-Home Assistant custom component to control Vimar shades by automating the official **Android Vimar View App** over ADB/UI automation.
+This repository now includes:
 
-## Features
+1. A custom integration (`custom_components/vimar_viewapp`) that controls Vimar shades/scenarios through the official Android app UI.
+2. A Home Assistant add-on (`addons/vimar_android_emulator`) that runs an Android emulator with ADB, so the integration has a built-in Android target.
 
-- `cover` entities for shades (open/close/stop/set-position).
-- `sensor` entities for shade diagnostics (`position`, `battery`, `signal`) when available from app UI.
+## Repository layout
+
+- `custom_components/vimar_viewapp`: Home Assistant integration code.
+- `addons/vimar_android_emulator`: Home Assistant add-on (Dockerfile included).
+- `docs/android_emulator_setup.md`: detailed emulator setup alternatives.
+- `deployment/docker-compose.emulator.yml`: standalone sidecar deployment option.
+
+---
+
+## Install the add-on + integration (recommended)
+
+### 1) Add this repository as an Add-on repository
+
+In Home Assistant:
+- **Settings → Add-ons → Add-on Store → ⋮ → Repositories**
+- Add this git repository URL.
+
+### 2) Install and start add-on: `Vimar Android Emulator (ADB)`
+
+- Open add-on page and install.
+- Enable **Start on boot**.
+- Start add-on.
+- Open emulator UI: `http://<HA_HOST>:6080`.
+- Install/open Vimar View app in emulator and complete first login.
+
+### 3) Install integration files
+
+Copy folder:
+
+- `custom_components/vimar_viewapp` → `<HA_CONFIG>/custom_components/vimar_viewapp`
+
+Restart Home Assistant.
+
+### 4) Configure integration
+
+- **Settings → Devices & Services → Add Integration → Vimar View App (Android Bridge)**
+- Provide:
+  - ADB host (`<HA_HOST>` or add-on container hostname reachable by HA)
+  - ADB port `5555`
+  - Vimar username/password
+  - optional app PIN
+  - polling interval
+
+---
+
+## Add-on implementation details
+
+The add-on is defined by:
+
+- `addons/vimar_android_emulator/config.yaml`
+- `addons/vimar_android_emulator/Dockerfile`
+- `addons/vimar_android_emulator/run.sh`
+- `addons/vimar_android_emulator/build.yaml`
+
+It uses Android emulator image `budtmo/docker-android:emulator_13.0` and exposes ADB on `5555`.
+
+## Features exposed by integration
+
+- `cover` entities for shades.
+- `sensor` entities for `position`, `battery`, `signal` (if visible in app UI).
 - `button` entities for Vimar scenarios.
-- Uses only Vimar app credentials (username/password + optional PIN) and an Android ADB endpoint.
 
-## Architecture
+## Limitations
 
-1. Integration connects to Android emulator/device over ADB (`uiautomator2`).
-2. Launches `it.vimar.View` and performs login when required.
-3. Reads current shades/scenarios from UI hierarchy.
-4. Executes shade/scenario actions by UI interactions.
-
----
-
-## Android emulator options
-
-You can either run an emulator “embedded” next to Home Assistant (same host) or use a remote emulator.
-
-### Embedded sidecar emulator (recommended)
-
-A ready compose file is provided:
-
-- `deployment/docker-compose.emulator.yml`
-
-Start it:
-
-```bash
-docker compose -f deployment/docker-compose.emulator.yml up -d
-```
-
-Then open `http://<host>:6080`, install/login Vimar View app, and configure integration with:
-
-- ADB host: `<host>`
-- ADB port: `5555`
-- Serial: optional (`<host>:5555`)
-
-### Detailed installation guide
-
-See `docs/android_emulator_setup.md` for:
-- sidecar setup,
-- Android Studio emulator setup,
-- physical device fallback,
-- HA OS/container caveats.
-
----
-
-## Requirements
-
-- Home Assistant with custom components support.
-- Android emulator/device reachable by ADB.
-- Official Vimar View app installed and usable in that Android runtime.
-
-## Installation
-
-1. Copy `custom_components/vimar_viewapp` into `<ha_config>/custom_components/`.
-2. Restart Home Assistant.
-3. Add integration: **Settings → Devices & Services → Add Integration → “Vimar View App (Android Bridge)”**.
-4. Enter:
-   - ADB host/port (or serial),
-   - Vimar username/password,
-   - optional app PIN,
-   - polling interval.
-
-## Known limitations
-
-- UI automation is sensitive to app layout/localization changes.
-- Some selectors may need tuning in `vimar_android_client.py`.
-- If the app changes screens/flows, entity discovery or actions may fail until selectors are updated.
+- UI automation depends on Vimar app layout/localization; selector updates may be needed when app UI changes.
+- Emulator performance requires virtualization support (`/dev/kvm`).
