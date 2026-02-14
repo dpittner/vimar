@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  # Android emulator exposed through ADB on port 5555.
+  # Run this next to Home Assistant (same host / same Docker network).
+  vimar-android-emulator:
+    image: budtmo/docker-android:emulator_13.0
+    container_name: vimar-android-emulator
+    privileged: true
+    environment:
+      - DEVICE=Samsung Galaxy S10
+      - EMULATOR_ARGS=-no-audio -no-boot-anim -gpu swiftshader_indirect
+      - WEB_VNC=true
+    ports:
+      - "6080:6080" # optional VNC web UI to interact with emulator
+      - "5555:5555" # ADB endpoint used by Home Assistant integration
+    volumes:
+      - android-data:/home/androidusr
+    restart: unless-stopped
+
+volumes:
+  android-data:
