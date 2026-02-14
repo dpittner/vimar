@@ -1,26 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-OPTIONS_FILE="/data/options.json"
-DEVICE_DEFAULT="Samsung Galaxy S10"
-EMULATOR_ARGS_DEFAULT="-no-audio -no-boot-anim -gpu swiftshader_indirect"
-
-json_get_string() {
-  local key="$1"
-  local file="$2"
-  tr -d '\n' < "$file" | sed -nE "s/.*\"${key}\"[[:space:]]*:[[:space:]]*\"([^\"]*)\".*/\1/p" | head -n1
-}
-
-if [ -f "$OPTIONS_FILE" ]; then
-  DEVICE="$(json_get_string "device" "$OPTIONS_FILE")"
-  EMULATOR_ARGS="$(json_get_string "emulator_args" "$OPTIONS_FILE")"
-
-  DEVICE="${DEVICE:-$DEVICE_DEFAULT}"
-  EMULATOR_ARGS="${EMULATOR_ARGS:-$EMULATOR_ARGS_DEFAULT}"
-else
-  DEVICE="$DEVICE_DEFAULT"
-  EMULATOR_ARGS="$EMULATOR_ARGS_DEFAULT"
-fi
+DEVICE="Samsung Galaxy S10"
+EMULATOR_ARGS="-no-audio -no-boot-anim -gpu swiftshader_indirect"
 
 # Persist Android emulator/user data under Home Assistant add-on /data.
 # /data is retained across add-on and Home Assistant restarts.
